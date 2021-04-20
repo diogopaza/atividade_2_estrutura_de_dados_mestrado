@@ -2,10 +2,11 @@
 #include <time.h>
 #include <math.h>
 
-clock_t t; //variável para armazenar tempo
-double tempo_execucao;
-int valor_buscado;
+clock_t t,tempo_ordenacao; //variável para armazenar tempo
+double tempo_execucao, tempo_ordenar_vetor = 0, tempo_total_busca;
+int valor_buscado,TAM=4096;
 char nome_busca[100];
+
 
 struct Pair {
 	int left, right;
@@ -16,26 +17,28 @@ int min(int a, int b) {
 }
 int buscaBinaria(int vetor[], int item, int tamanho){
 
-strcpy( nome_busca, "Busca_Binaria");
+strcpy( nome_busca, "Binaria");
 valor_buscado = item;
 int inicio = 1;
 int fim = tamanho - 1;
 int meio;
 t = clock(); //armazena tempo
+
 while (inicio <= fim){
-	
+
 	meio = (inicio + fim) / 2;
 
 	if (vetor[meio] == item ){
         t = clock() - t; //tempo final - tempo inicial
         tempo_execucao = (double)t / (CLOCKS_PER_SEC/1000);//conversão para double
+        tempo_total_busca = tempo_execucao + tempo_ordenar_vetor;
 		return meio;
-		
+
 	}
 	if (item > vetor[meio]){
 
 		inicio = meio + 1;
-		
+
 	}
 	else{
 		fim = meio - 1;
@@ -43,6 +46,8 @@ while (inicio <= fim){
 }
     t = clock() - t; //tempo final - tempo inicial
     tempo_execucao = (double)t / (CLOCKS_PER_SEC/1000);//conversão para double
+    tempo_total_busca = tempo_execucao + tempo_ordenar_vetor;
+
     return -1;
 
 }
@@ -52,20 +57,20 @@ struct Pair jumpSearchUtil(int arr[], int n, int val, int low, int high) {
     int step = (int) sqrt(high - low);
     int right = 0;
 	struct Pair p;
-	
+
     while (left < high && arr[left] <= val) {
         right = min(left + step, high);
 
         if (arr[left] <= val && arr[right] >= val) {
             p.left = left;
             p.right = right;
-            
+
 			return p;
         }
 
         left = right;
     }
-    
+
 	p.left = -1;
 
     return p;
@@ -73,7 +78,7 @@ struct Pair jumpSearchUtil(int arr[], int n, int val, int low, int high) {
 
 int jumpSearch(int arr[], int n, int val) {
 
-    strcpy( nome_busca, "Jump_Search");
+    strcpy( nome_busca, "Jump");
     valor_buscado = val;
     int low = 0, high = n - 1;
     t = clock(); //armazena tempo
@@ -83,14 +88,17 @@ int jumpSearch(int arr[], int n, int val) {
         if (p.left == -1) {
             t = clock() - t; //tempo final - tempo inicial
             tempo_execucao = (double)t / (CLOCKS_PER_SEC/1000);//conversão para double
+            tempo_total_busca = tempo_execucao + tempo_ordenar_vetor;
             return -1;
         }
 
         low = p.left;
         high = p.right;
     }
+    
     t = clock() - t; //tempo final - tempo inicial
     tempo_execucao = (double)t / (CLOCKS_PER_SEC/1000);//conversão para double
+    tempo_total_busca = tempo_execucao + tempo_ordenar_vetor;
     return arr[low] == val ? low : arr[high] == val ? high : -1;
 }
 
@@ -100,12 +108,12 @@ int jumpSearch(int arr[], int n, int val) {
 int buscaSequencial(int v[],int tamanho, int pesq)
 {
     int i;
-    strcpy( nome_busca, "Busca_Sequencial");
+    strcpy( nome_busca, "Sequencial");
     valor_buscado = pesq;
-    t = clock(); //armazena tempo    
+    t = clock(); //armazena tempo
      for(i=0;i<tamanho;i++)
      {
-         
+
           if(v[i]==pesq)
           {
             t = clock() - t; //tempo final - tempo inicial
@@ -121,20 +129,22 @@ int buscaSequencial(int v[],int tamanho, int pesq)
 int buscaSequencialVetorOrdenado(int vetor_ordenado[],int tamanho, int pesq)
 {
     int i;
-    strcpy( nome_busca, "Busca_Sequencial_Ordenado");
+    strcpy( nome_busca, "Ordenado");
     valor_buscado = pesq;
     t = clock(); //armazena tempo
     for (i = 0; i < tamanho; i++) {
         if (vetor_ordenado[i] == pesq){
             t = clock() - t; //tempo final - tempo inicial
             tempo_execucao = (double)t / (CLOCKS_PER_SEC/1000);//conversão para double
+            tempo_total_busca = tempo_execucao + tempo_ordenar_vetor;
             return i; /* encontrou */
-        } 
+        }
         if (vetor_ordenado[i] > pesq){
             t = clock() - t; //tempo final - tempo inicial
             tempo_execucao = (double)t / (CLOCKS_PER_SEC/1000);//conversão para double
+            tempo_total_busca = tempo_execucao + tempo_ordenar_vetor;
             return -1; /* não adianta continuar procurando */
-        } 
+        }
     }
     /* foi até o final e não encontrou */
     t = clock() - t; //tempo final - tempo inicial
@@ -142,32 +152,6 @@ int buscaSequencialVetorOrdenado(int vetor_ordenado[],int tamanho, int pesq)
     return -1;
 }
 
-
-/*
-void executaTesteBuscaSequencial(int vet[], int valor_buscado[], int tamanho_vetor){
-    int resultado, valor_pesquisado;
-    clock_t t; //variável para armazenar tempo
-    t = clock(); //armazena tempo
-    resultado = buscaSequencial(vet,tamanho_vetor,valor_buscado);
-    t = clock() - t; //tempo final - tempo inicial
-    //imprime o tempo na tela
-    printf("Busca Sequencial valor encontrado na posição %d\n", resultado);
-    printf("Tempo de execucao: %lf\n", ((double)t)/((CLOCKS_PER_SEC/1000))); //conversão para double
-    
-}
-
-void executaTesteBuscaSequencialVetorOrdenado(int vetorOrdenado[], int valor_buscado[], int tamanho_vetor){
-    int resultado,valor=0, valor_pesquisado;
-    clock_t t; //variável para armazenar tempo
-    t = clock(); //armazena tempo
-    resultado = buscaSequencialVetorOrdenado(vetorOrdenado,tamanho_vetor,valor_buscado);
-    t = clock() - t; //tempo final - tempo inicial
-    //imprime o tempo na tela
-    printf("Busca Sequencial Vetor Ordenado valor encontrado na posição %d\n", resultado);
-    printf("Tempo de execucao: %lf\n", ((double)t)/((CLOCKS_PER_SEC/1000))); //conversão para double
-    
-}
-*/
 //retorna valores para preencher o vetor
 int preencheVetor(int menor, int maior)
 {
@@ -177,7 +161,7 @@ int preencheVetor(int menor, int maior)
 }
 
 void sortearNumerosTestarALgoritmos(int vetor[],int menor, int maior){
-     
+
      for(int i = 0; i < 100; i++)
     {
        vetor[i] = rand() % maior + menor;
@@ -187,6 +171,7 @@ void sortearNumerosTestarALgoritmos(int vetor[],int menor, int maior){
 
 void ordernarVetor(int vetorN[], int tamanho)
 {
+tempo_ordenacao = clock(); //armazena tempo
 int i, j,x;
 int aux;
 
@@ -198,12 +183,13 @@ for(i = 0; i < tamanho; i++)
         {
             aux = vetorN[i];
             vetorN[i] = vetorN[j];
-            vetorN[j] = aux;            
+            vetorN[j] = aux;
         }
     }
     }
-    
-    
+tempo_ordenacao = clock() - tempo_ordenacao; //tempo final - tempo inicial
+tempo_ordenar_vetor = (double)tempo_ordenacao / (CLOCKS_PER_SEC/1000);//conversão para double
+printf("%lf", tempo_ordenar_vetor);
 }
 
 void exibirVetor(int vetorN[], int tamanho)
@@ -218,74 +204,54 @@ for(i = 0; i < tamanho; i++)
 
 int main () {
     srand(time(NULL));
-    int i,TAM=1024;
+    int i;
     int* vetorPrincipal = (int*) malloc(TAM * sizeof(int));
     int* vetorOrdenar = (int*) malloc(TAM * sizeof(int));
-    //int vetorPrincipal[TAM];
-    //int vetorOrdenar[TAM];
     int numerosSorteados[100];
-    
-    
-    for(i = 0; i < 1024; i++)
+
+
+    for(i = 0; i < TAM; i++)
     {
         int valor;
-        valor = preencheVetor(0, 5000);
+        valor = preencheVetor(0, 10000);
         vetorPrincipal[i] = valor;
         vetorOrdenar[i] = valor;
-        //printf("valor vetor princiapal %d\n",vetorPrincipal[i]);
-        //printf("valor vetor ordenar %d\n",vetorOrdenar[i]);
     }
 
-    
-    sortearNumerosTestarALgoritmos(numerosSorteados, 0, 2000);
+
+    sortearNumerosTestarALgoritmos(numerosSorteados, 0, 5000);
     ordernarVetor(vetorOrdenar, TAM);
-   /* for(i = 0; i < 100; i++)
-    {
-        int resultado=0;
-        //executaTesteBuscaSequencial(vetorPrincipal,numerosSorteados[i], TAM);
-       // executaTesteBuscaSequencialVetorOrdenado(vetorOrdenar,numerosSorteados[i], TAM);
-        resultado = buscaSequencialVetorOrdenado(vetorOrdenar,TAM,numerosSorteados[i], *tempo_resposta);
-        printf("resultado %d\n", resultado);
-    }*/
+ 
     //GRAVANDO EM ARQUIVO
     FILE *arquivo;
-    arquivo = fopen("relatorio.csv", "w");
+    arquivo = fopen("tabela.csv", "w");
     if(arquivo == NULL)
     {
         printf("Não foi possível abrir o arquivo\n");
         getchar();
         exit(1);
-    }   
+    }
     int resultado=0;
-    fprintf(arquivo,"Busca;Posição;Valor_Pesquisado;Tempo_Resposta\n");
-    //int n_jump_search = sizeof(vetorPrincipal) / sizeof(vetorPrincipal[0]);
-
-    for(i = 0; i < 100; i++)    
-    {
-        
-        resultado = buscaSequencial(vetorOrdenar,TAM,numerosSorteados[i]);
-        printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-        fprintf(arquivo, "%s; %d; %d; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-        resultado = buscaSequencialVetorOrdenado(vetorOrdenar,TAM,numerosSorteados[i]);
-        printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-        fprintf(arquivo, "%s; %d; %d; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-        resultado = buscaBinaria(vetorOrdenar,numerosSorteados[i],TAM);
-        printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-        fprintf(arquivo, "%s; %d; %d; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-        resultado = jumpSearch(vetorOrdenar,TAM,numerosSorteados[i]);
-        printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-        fprintf(arquivo, "%s; %d; %d; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
-
-    }      
+    exibirVetor(vetorOrdenar, TAM);
+    fprintf(arquivo,"Busca;Posicao;Valor_Pesquisado;Tempo_Resposta;Tempo_Ordenar_Vetor;Tempo_Total_Busca\n");
     
+    for(i = 0; i < 100; i++)
+    {
+
+        resultado = buscaSequencial(vetorPrincipal,TAM,numerosSorteados[i]);
+        //printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
+        fprintf(arquivo, "%s; %d; %d; %lf; %d; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao,0, tempo_execucao);
+        resultado = buscaSequencialVetorOrdenado(vetorOrdenar,TAM,numerosSorteados[i]);
+        //printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
+        fprintf(arquivo, "%s; %d; %d; %lf; %lf; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao, tempo_ordenar_vetor, tempo_total_busca);
+        resultado = jumpSearch(vetorOrdenar,TAM,numerosSorteados[i]);
+        //printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
+        fprintf(arquivo, "%s; %d; %d; %lf; %lf; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao, tempo_ordenar_vetor, tempo_total_busca);
+        resultado = buscaBinaria(vetorOrdenar,numerosSorteados[i],TAM);
+        //printf("%s %d %d %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao);
+        fprintf(arquivo, "%s; %d; %d; %lf; %lf; %lf\n",nome_busca, resultado, valor_buscado, tempo_execucao, tempo_ordenar_vetor, tempo_total_busca);
+    }
+
     fclose(arquivo);
     return 0;
-    
-    
-    //exibirVetor(vetorOrdenar, TAM);
-
-
-   return 0;
-
-
 }

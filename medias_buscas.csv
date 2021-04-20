@@ -1,0 +1,45 @@
+Busca ,Media,Tamanho
+Busca Sequencial,0.00664,1024
+Busca Seq. Vetor Ordenado,0.00168,1024
+Busca Binaria,0.00147,1024
+Busca com Saltos,0.00184,1024
+Busca Sequencial,0.01332,2048
+Busca Seq. Vetor Ordenado,0.00158,2048
+Busca Binaria,0.00148,2048
+Busca com Saltos,0.00172,2048
+Busca Sequencial,0.02393,4096
+Busca Seq. Vetor Ordenado,0.00311,4096
+Busca Binaria,0.00163,4096
+Busca com Saltos,0.00207,4096
+Busca Sequencial,0.0407,8192
+Busca Seq. Vetor Ordenado,0.00405,8192
+Busca Binaria,0.00156,8192
+Busca com Saltos,0.00186,8192
+Busca Sequencial,0.07689,16384
+Busca Seq. Vetor Ordenado,0.00558,16384
+Busca Binaria,0.00155,16384
+Busca com Saltos,0.00189,16384
+Busca Sequencial,0.1518,32768
+Busca Seq. Vetor Ordenado,0.01290,32768
+Busca Binaria,0.00171,32768
+Busca com Saltos,0.00224,32768
+Busca Sequencial,0.2757,65525
+Busca Seq. Vetor Ordenado,0.02875,65525
+Busca Binaria,0.00181,65525
+Busca com Saltos,0.00225,65525
+Busca Sequencial,0.6117,131072
+Busca Seq. Vetor Ordenado,0.02197,131072
+Busca Binaria,0.00181,131072
+Busca com Saltos,0.00221,131072
+Busca Sequencial,1524,262144
+Busca Seq. Vetor Ordenado,0.01089,262144
+Busca Binaria,0.00177,262144
+Busca com Saltos,0.00209,262144
+Busca Sequencial,3053,524288
+Busca Seq. Vetor Ordenado,0.00990,524288
+Busca Binaria,0.00179,524288
+Busca com Saltos,0.00209,524288
+Busca Sequencial,4136,1048576
+Busca Seq. Vetor Ordenado,0.3053,1048576
+Busca Binaria,0.00229,1048576
+Busca com Saltos,0.00302,1048576
