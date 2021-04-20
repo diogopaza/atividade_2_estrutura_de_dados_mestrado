@@ -95,7 +95,7 @@ int jumpSearch(int arr[], int n, int val) {
         low = p.left;
         high = p.right;
     }
-    
+
     t = clock() - t; //tempo final - tempo inicial
     tempo_execucao = (double)t / (CLOCKS_PER_SEC/1000);//conversão para double
     tempo_total_busca = tempo_execucao + tempo_ordenar_vetor;
@@ -213,15 +213,15 @@ int main () {
     for(i = 0; i < TAM; i++)
     {
         int valor;
-        valor = preencheVetor(0, 10000);
+        valor = preencheVetor(0, 8000);
         vetorPrincipal[i] = valor;
         vetorOrdenar[i] = valor;
     }
 
 
-    sortearNumerosTestarALgoritmos(numerosSorteados, 0, 5000);
+    sortearNumerosTestarALgoritmos(numerosSorteados, 0, 4000);
     ordernarVetor(vetorOrdenar, TAM);
- 
+
     //GRAVANDO EM ARQUIVO
     FILE *arquivo;
     arquivo = fopen("tabela.csv", "w");
@@ -232,9 +232,9 @@ int main () {
         exit(1);
     }
     int resultado=0;
-    exibirVetor(vetorOrdenar, TAM);
+   // exibirVetor(vetorOrdenar, TAM);
     fprintf(arquivo,"Busca;Posicao;Valor_Pesquisado;Tempo_Resposta;Tempo_Ordenar_Vetor;Tempo_Total_Busca\n");
-    
+
     for(i = 0; i < 100; i++)
     {
 
